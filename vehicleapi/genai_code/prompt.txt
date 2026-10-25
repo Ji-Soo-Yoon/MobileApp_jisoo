@@ -1,0 +1,44 @@
+Generate a complete FastAPI application using uv project structure.
+
+Requirements:
+
+1. Use an in-memory database implemented with Python dictionaries or lists. Do not use any external database.
+
+2. Create a Manufacturer model with the following fields:
+   - id
+   - name
+   - country
+
+3. Create a Vehicle model with the following fields:
+   - id
+   - manufacturer_id
+   - model
+   - year
+
+4. Implement complete CRUD operations for Manufacturer:
+   - Create Manufacturer
+   - Get All Manufacturers
+   - Get Manufacturer By ID
+   - Update Manufacturer
+   - Delete Manufacturer
+
+5. Implement complete CRUD operations for Vehicle:
+   - Create Vehicle
+   - Get All Vehicles
+   - Get Vehicle By ID
+   - Update Vehicle
+   - Delete Vehicle
+
+6. Use FastAPI and Pydantic models for request and response validation.
+
+7. Store all data in memory during runtime.
+
+8. Generate a complete main.py file that is ready to run using:
+   uv run fastapi dev main.py
+
+Additional Requirements:
+- Include proper HTTP status codes.
+- Include HTTPException error handling.
+- Validate that a Vehicle cannot be created unless the referenced Manufacturer exists.
+- When a Manufacturer is deleted, remove all Vehicles associated with that Manufacturer.
+- Make the code clean, organized, and fully functional.
