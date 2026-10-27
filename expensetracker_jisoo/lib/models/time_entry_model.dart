@@ -2,40 +2,42 @@ class TimeEntry {
   final String id;
   final String projectId;
   final String taskId;
-  final double totalTime;
+  final double amount;
   final DateTime date;
   final String notes;
+  final String businessPersonName;
 
   TimeEntry({
     required this.id,
     required this.projectId,
     required this.taskId,
-    required this.totalTime,
+    required this.amount,
     required this.date,
     required this.notes,
+    required this.businessPersonName,
   });
 
-  // Convert a JSON object to an Expense instance
   factory TimeEntry.fromJson(Map<String, dynamic> json) {
     return TimeEntry(
       id: json['id'],
       projectId: json['projectId'],
       taskId: json['taskId'],
-      totalTime: json['totalTime'],
+      amount: json['amount'],
       date: DateTime.parse(json['date']),
       notes: json['notes'],
+      businessPersonName: json['businessPersonName'],
     );
   }
 
-  // Convert an Expense instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'projectId': projectId,
       'taskId': taskId,
-      'totalTime': totalTime,
+      'amount': amount,
       'date': date.toIso8601String(),
       'notes': notes,
+      'businessPersonName': businessPersonName,
     };
   }
 }

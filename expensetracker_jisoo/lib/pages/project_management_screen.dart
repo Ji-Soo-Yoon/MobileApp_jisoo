@@ -11,7 +11,7 @@ class ProjectManagementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Projects"),
+        title: Text("Manage Expense Categories"),
         backgroundColor:
             Colors.deepPurple, // Themed color similar to your inspirations
         foregroundColor: Colors.white,
@@ -50,7 +50,7 @@ class ProjectManagementScreen extends StatelessWidget {
             ),
           );
         },
-        tooltip: 'Add New Project',
+        tooltip: 'Add New Expense Category',
         child: Icon(Icons.add),
       ),
     );

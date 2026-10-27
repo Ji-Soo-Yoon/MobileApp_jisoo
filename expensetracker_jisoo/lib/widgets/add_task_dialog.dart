@@ -7,7 +7,7 @@ import '../data_providers/time_entry_provider.dart';
 class AddTaskDialog extends StatefulWidget {
   final Function(Task) onAdd;
 
-  const AddTaskDialog({super.key,required this.onAdd});
+  const AddTaskDialog({super.key, required this.onAdd});
 
   @override
   State<AddTaskDialog> createState() => _AddTaskDialogState();
@@ -19,12 +19,10 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add New Task'),
+      title: Text('Add Expense Subcategory'),
       content: TextField(
         controller: _controller,
-        decoration: InputDecoration(
-          labelText: 'Task Name',
-        ),
+        decoration: InputDecoration(labelText: 'Subcategory Name'),
       ),
       actions: [
         TextButton(
@@ -34,10 +32,19 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         TextButton(
           child: Text('Add'),
           onPressed: () {
-            var newTask = Task(id: Provider.of<TimeEntryProvider>(context, listen: false).generateTaskId().toString(), name: _controller.text);
+            var newTask = Task(
+              id: Provider.of<TimeEntryProvider>(
+                context,
+                listen: false,
+              ).generateTaskId().toString(),
+              name: _controller.text,
+            );
             widget.onAdd(newTask);
             // Update the provider and UI
-            Provider.of<TimeEntryProvider>(context, listen: false).addTask(newTask);
+            Provider.of<TimeEntryProvider>(
+              context,
+              listen: false,
+            ).addTask(newTask);
             // Clear the input field for next input
             _controller.clear();
 

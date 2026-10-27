@@ -16,8 +16,8 @@ class AddTimeEntryScreen extends StatefulWidget {
 }
 
 class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
-  late TextEditingController _totalTimeController;
-  //late TextEditingController _payeeController;
+  late TextEditingController _amountController;
+  late TextEditingController _businessPersonController;
   late TextEditingController _noteController;
   String? _selectedProjectId;
   String? _selectedTaskId;
@@ -26,8 +26,11 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   @override
   void initState() {
     super.initState();
-    _totalTimeController = TextEditingController(
-      text: widget.initialTimeEntry?.totalTime.toString() ?? '',
+    _amountController = TextEditingController(
+      text: widget.initialTimeEntry?.amount.toString() ?? '',
+    );
+    _businessPersonController = TextEditingController(
+      text: widget.initialTimeEntry?.businessPersonName ?? '',
     );
     // _payeeController =
     //     TextEditingController(text: widget.initialExpense?.payee ?? '');
@@ -67,12 +70,16 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
             ),
             buildDateField(_selectedDate),
             buildTextField(
-              _totalTimeController,
+              _amountController,
               'Amount',
               TextInputType.numberWithOptions(decimal: true),
             ),
+            buildTextField(
+              _businessPersonController,
+              'Business/Person Name',
+              TextInputType.text,
+            ),
             buildTextField(_noteController, 'Note', TextInputType.text),
-
             // buildCategoryDropdown(expenseProvider),
             // buildTagDropdown(expenseProvider),
           ],
@@ -95,7 +102,8 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   // Helper methods for building the form elements go here (omitted for brevity)
 
   void _saveTimeEntry() {
-    if (_totalTimeController.text.isEmpty) {
+    if (_amountController.text.isEmpty ||
+        _businessPersonController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill in all required fields!')),
       );
@@ -113,10 +121,11 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
         context,
         listen: false,
       ).generateTimeEntryId().toString(),
-      totalTime: double.parse(_totalTimeController.text),
+      amount: double.parse(_amountController.text),
       projectId: _selectedProjectId!,
       taskId: _selectedTaskId!,
       notes: _noteController.text,
+      businessPersonName: _businessPersonController.text,
       date: _selectedDate,
     );
 

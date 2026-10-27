@@ -48,56 +48,49 @@ class TimeEntryProvider with ChangeNotifier {
   }
 
   void _loadTimeEntriesFromStorage() {
-  var storedTimeEntries = storage.getItem('timeEntries');
-  if (storedTimeEntries != null) {
-    final List<dynamic> decoded = jsonDecode(storedTimeEntries);
-    _timeEntries = decoded
-        .map((item) => TimeEntry.fromJson(Map<String, dynamic>.from(item)))
-        .toList();
-    notifyListeners();
-  }
-  else
-  {
-    _saveTimeEntriesToStorage();
+    var storedTimeEntries = storage.getItem('timeEntries');
+    if (storedTimeEntries != null) {
+      final List<dynamic> decoded = jsonDecode(storedTimeEntries);
+      _timeEntries = decoded
+          .map((item) => TimeEntry.fromJson(Map<String, dynamic>.from(item)))
+          .toList();
+      notifyListeners();
+    } else {
+      _saveTimeEntriesToStorage();
+    }
   }
 
-}
-
-void _loadProjectsFromStorage() {
-  var storedProjects = storage.getItem('projects');
-  if (storedProjects != null) {
-    final List<dynamic> decoded = jsonDecode(storedProjects);
-    _projects = decoded
-        .map((item) => Project.fromJson(Map<String, dynamic>.from(item)))
-        .toList();
-    notifyListeners();
-  }
-  else
-  {
+  void _loadProjectsFromStorage() {
+    var storedProjects = storage.getItem('projects');
+    if (storedProjects != null) {
+      final List<dynamic> decoded = jsonDecode(storedProjects);
+      _projects = decoded
+          .map((item) => Project.fromJson(Map<String, dynamic>.from(item)))
+          .toList();
+      notifyListeners();
+    } else {
       storage.setItem(
         'projects',
         jsonEncode(_projects.map((p) => p.toJson()).toList()),
       );
+    }
   }
-}
 
-void _loadTasksFromStorage() {
-  var storedTasks = storage.getItem('tasks');
-  if (storedTasks != null) {
-    final List<dynamic> decoded = jsonDecode(storedTasks);
-    _tasks = decoded
-        .map((item) => Task.fromJson(Map<String, dynamic>.from(item)))
-        .toList();
-    notifyListeners();
-  }
-  else
-  {
+  void _loadTasksFromStorage() {
+    var storedTasks = storage.getItem('tasks');
+    if (storedTasks != null) {
+      final List<dynamic> decoded = jsonDecode(storedTasks);
+      _tasks = decoded
+          .map((item) => Task.fromJson(Map<String, dynamic>.from(item)))
+          .toList();
+      notifyListeners();
+    } else {
       storage.setItem(
         'tasks',
         jsonEncode(_tasks.map((t) => t.toJson()).toList()),
       );
+    }
   }
-}
 
   // Add an expense
   void addTimeEntry(TimeEntry timeEntry) {
@@ -106,12 +99,12 @@ void _loadTasksFromStorage() {
     notifyListeners();
   }
 
- void _saveTimeEntriesToStorage() {
-  storage.setItem(
-    'timeEntries',
-    jsonEncode(_timeEntries.map((e) => e.toJson()).toList()),
-  );
-}
+  void _saveTimeEntriesToStorage() {
+    storage.setItem(
+      'timeEntries',
+      jsonEncode(_timeEntries.map((e) => e.toJson()).toList()),
+    );
+  }
 
   void addOrUpdateTimeEntries(TimeEntry timeEntry) {
     int index = _timeEntries.indexWhere((e) => e.id == timeEntry.id);
@@ -180,7 +173,7 @@ void _loadTasksFromStorage() {
   int generateTimeEntryId() {
     return timeEntries.length;
   }
-/*
+  /*
   void removeTimeEntry(String id) {
     _timeEntries.removeWhere((timeEntry) => timeEntry.id == id);
     _saveTimeEntriesToStorage(); // Save the updated list to local storage

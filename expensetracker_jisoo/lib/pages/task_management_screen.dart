@@ -9,8 +9,9 @@ class TaskManagementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Tasks"),
-        backgroundColor: Colors.deepPurple, // Themed color similar to your inspirations
+        title: Text("Manage Expense Subcategories"),
+        backgroundColor:
+            Colors.deepPurple, // Themed color similar to your inspirations
         foregroundColor: Colors.white,
       ),
       body: Consumer<TimeEntryProvider>(
@@ -39,13 +40,18 @@ class TaskManagementScreen extends StatelessWidget {
             context: context,
             builder: (context) => AddTaskDialog(
               onAdd: (newTask) {
-                Provider.of<TimeEntryProvider>(context, listen: false).addTask(newTask);
-                Navigator.pop(context); // Close the dialog after adding the new task
+                Provider.of<TimeEntryProvider>(
+                  context,
+                  listen: false,
+                ).addTask(newTask);
+                Navigator.pop(
+                  context,
+                ); // Close the dialog after adding the new task
               },
             ),
           );
         },
-        tooltip: 'Add New Task',
+        tooltip: 'Add New Expense Subcategory',
         child: Icon(Icons.add),
       ),
     );

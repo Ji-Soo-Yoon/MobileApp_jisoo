@@ -110,14 +110,14 @@ class _HomeScreenState extends State<HomeScreen>
               children: [
                 Icon(Icons.hourglass_empty, size: 50, color: Colors.deepPurple),
                 Text(
-                  'No time entries yet!',
+                  'No expenses yet!',
                   style: TextStyle(
                     color: const Color.fromARGB(255, 55, 55, 55),
                     fontSize: 24,
                   ),
                 ),
                 Text(
-                  "Click the + button to record time entries.",
+                  "Click the + button to add expenses.",
                   style: TextStyle(color: Colors.grey[600], fontSize: 18),
                 ),
               ],
@@ -152,7 +152,8 @@ class _HomeScreenState extends State<HomeScreen>
                     "${getProjectNameById(context, timeEntry.projectId)} - ${getTaskNameById(context, timeEntry.taskId)}",
                   ),
                   subtitle: Text(
-                    "Total time: ${timeEntry.totalTime.toStringAsFixed(2)} hours"
+                    "Amount: \$${timeEntry.amount.toStringAsFixed(2)}"
+                    "\nBusiness/Person: ${timeEntry.businessPersonName}"
                     "\nDate: $formattedDate"
                     "\nNotes: ${timeEntry.notes.isNotEmpty ? timeEntry.notes : 'None'}",
                   ),
@@ -190,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 Text(
-                  "Tap the + button to add your first entry.",
+                  "Tap the + button to add your first expense.",
                   style: TextStyle(color: Colors.grey[600], fontSize: 18),
                 ),
               ],
@@ -211,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen>
             ); // Ensure you implement this function
             double total = entry.value.fold(
               0.0,
-              (double prev, TimeEntry element) => prev + element.totalTime,
+              (double prev, TimeEntry element) => prev + element.amount,
             );
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen>
                       leading: Text("-"),
                       title: Text(
                         "${getTaskNameById(context, timeEntry.taskId)}"
-                        ":${timeEntry.totalTime.toStringAsFixed(2)} hours"
+                        ": \$${timeEntry.amount.toStringAsFixed(2)} "
                         "(${DateFormat('MMM dd, yyyy').format(timeEntry.date)})",
                       ),
                     );

@@ -18,12 +18,10 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add New Project'),
+      title: Text('Add Expense Category'),
       content: TextField(
         controller: _controller,
-        decoration: InputDecoration(
-          labelText: 'Project Name',
-        ),
+        decoration: InputDecoration(labelText: 'Category Name'),
       ),
       actions: [
         TextButton(
@@ -34,10 +32,17 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
           child: Text('Add'),
           onPressed: () {
             var newProject = Project(
-                id: Provider.of<TimeEntryProvider>(context, listen: false).generateProjectId().toString(), name: _controller.text);
+              id: Provider.of<TimeEntryProvider>(
+                context,
+                listen: false,
+              ).generateProjectId().toString(),
+              name: _controller.text,
+            );
             widget.onAdd(newProject);
-            Provider.of<TimeEntryProvider>(context, listen: false)
-                .addProject(newProject);
+            Provider.of<TimeEntryProvider>(
+              context,
+              listen: false,
+            ).addProject(newProject);
             _controller.clear(); // Clear the input field
             Navigator.of(context).pop();
           },
