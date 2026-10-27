@@ -18,8 +18,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final _allEntryTabLabel = "All Entries";
-  final _groupByProjectTabLabel = "Grouped by Projects";
+  final _allEntryTabLabel = "All Expenses";
+  final _groupByProjectTabLabel = "Grouped by Categories";
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Time Tracker"),
+        title: Text("Expense Tracker"),
         backgroundColor: Colors.deepPurple[800],
         foregroundColor: Colors.white,
         bottom: TabBar(
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             ListTile(
               leading: Icon(Icons.category, color: Colors.deepPurple),
-              title: Text('Manage Projects'),
+              title: Text('Manage Expense Categories'),
               onTap: () {
                 Navigator.pop(context); // This closes the drawer
                 Navigator.pushNamed(context, '/manage_projects');
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             ListTile(
               leading: Icon(Icons.tag, color: Colors.deepPurple),
-              title: Text('Manage Tasks'),
+              title: Text('Manage Expense Subcategories'),
               onTap: () {
                 Navigator.pop(context); // This closes the drawer
                 Navigator.pushNamed(context, '/manage_tasks');
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
           context,
           MaterialPageRoute(builder: (context) => AddTimeEntryScreen()),
         ),
-        tooltip: 'Add Time Entry',
+        tooltip: 'Add Expense',
         child: Icon(Icons.add),
       ),
     );

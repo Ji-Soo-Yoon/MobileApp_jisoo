@@ -27,11 +27,13 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   void initState() {
     super.initState();
     _totalTimeController = TextEditingController(
-        text: widget.initialTimeEntry?.totalTime.toString() ?? '');
+      text: widget.initialTimeEntry?.totalTime.toString() ?? '',
+    );
     // _payeeController =
     //     TextEditingController(text: widget.initialExpense?.payee ?? '');
-    _noteController =
-        TextEditingController(text: widget.initialTimeEntry?.notes ?? '');
+    _noteController = TextEditingController(
+      text: widget.initialTimeEntry?.notes ?? '',
+    );
     _selectedDate = widget.initialTimeEntry?.date ?? DateTime.now();
     _selectedProjectId = widget.initialTimeEntry?.projectId;
     _selectedTaskId = widget.initialTimeEntry?.taskId;
@@ -43,7 +45,8 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            widget.initialTimeEntry == null ? 'Add Time Entry' : 'Edit Time Entry'),
+          widget.initialTimeEntry == null ? 'Add Expense' : 'Edit Expense',
+        ),
         backgroundColor: Colors.deepPurple[400],
       ),
       body: SingleChildScrollView(
@@ -52,21 +55,26 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  bottom: 8.0), // Adjust the padding as needed
+                bottom: 8.0,
+              ), // Adjust the padding as needed
               child: buildProjectDropdown(timeProvider),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  bottom: 8.0), // Adjust the padding as needed
+                bottom: 8.0,
+              ), // Adjust the padding as needed
               child: buildTaskDropdown(timeProvider),
             ),
             buildDateField(_selectedDate),
-            buildTextField(_totalTimeController, 'Total Time (hours)',
-                TextInputType.numberWithOptions(decimal: true)),
-            buildTextField(_noteController, 'note', TextInputType.text),
+            buildTextField(
+              _totalTimeController,
+              'Amount',
+              TextInputType.numberWithOptions(decimal: true),
+            ),
+            buildTextField(_noteController, 'Note', TextInputType.text),
+
             // buildCategoryDropdown(expenseProvider),
             // buildTagDropdown(expenseProvider),
-
           ],
         ),
       ),
@@ -79,7 +87,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
             minimumSize: Size(double.infinity, 50),
           ),
           onPressed: _saveTimeEntry,
-          child: Text('Save Time Entry'),
+          child: Text('Save Expense'),
         ),
       ),
     );
@@ -89,18 +97,22 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   void _saveTimeEntry() {
     if (_totalTimeController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please fill in all required fields!')));
+        SnackBar(content: Text('Please fill in all required fields!')),
+      );
       return;
     }
-    if(_selectedProjectId == null || _selectedTaskId == null) {
+    if (_selectedProjectId == null || _selectedTaskId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a project and a task!')));
+        SnackBar(content: Text('Please select a project and a task!')),
+      );
       return;
     }
-    
 
     final timeEntry = TimeEntry(
-      id: Provider.of<TimeEntryProvider>(context, listen: false).generateTimeEntryId().toString(),
+      id: Provider.of<TimeEntryProvider>(
+        context,
+        listen: false,
+      ).generateTimeEntryId().toString(),
       totalTime: double.parse(_totalTimeController.text),
       projectId: _selectedProjectId!,
       taskId: _selectedTaskId!,
@@ -109,14 +121,19 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
     );
 
     // Calling the provider to add or update the expense
-    Provider.of<TimeEntryProvider>(context, listen: false)
-        .addOrUpdateTimeEntries(timeEntry);
+    Provider.of<TimeEntryProvider>(
+      context,
+      listen: false,
+    ).addOrUpdateTimeEntries(timeEntry);
     Navigator.pop(context);
   }
 
   // Helper method to build a text field
   Widget buildTextField(
-      TextEditingController controller, String label, TextInputType type) {
+    TextEditingController controller,
+    String label,
+    TextInputType type,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
@@ -130,7 +147,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
     );
   }
 
-// Helper method to build the date picker field
+  // Helper method to build the date picker field
   Widget buildDateField(DateTime selectedDate) {
     return ListTile(
       title: Text("Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}"),
@@ -151,7 +168,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
     );
   }
 
-// Helper method to build the project dropdown
+  // Helper method to build the project dropdown
   Widget buildProjectDropdown(TimeEntryProvider provider) {
     return DropdownButtonFormField<String>(
       initialValue: _selectedProjectId,
@@ -159,37 +176,42 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
         if (newValue == 'New') {
           showDialog(
             context: context,
-            builder: (context) => AddProjectDialog(onAdd: (newCategory) {
-              setState(() {
-                _selectedProjectId =
-                    newCategory.id; // Automatically select the new category
-                provider.addProject(
-                    newCategory); // Add to provider, assuming this method exists
-              });
-            }),
+            builder: (context) => AddProjectDialog(
+              onAdd: (newCategory) {
+                setState(() {
+                  _selectedProjectId =
+                      newCategory.id; // Automatically select the new category
+                  provider.addProject(
+                    newCategory,
+                  ); // Add to provider, assuming this method exists
+                });
+              },
+            ),
           );
         } else {
           setState(() => _selectedProjectId = newValue);
         }
       },
-      items: provider.projects.map<DropdownMenuItem<String>>((project) {
-        return DropdownMenuItem<String>(
-          value: project.id,
-          child: Text(project.name),
-        );
-      }).toList()
-        ..add(DropdownMenuItem(
-          value: "New",
-          child: Text("Add New Project"),
-        )),
+      items:
+          provider.projects.map<DropdownMenuItem<String>>((project) {
+            return DropdownMenuItem<String>(
+              value: project.id,
+              child: Text(project.name),
+            );
+          }).toList()..add(
+            DropdownMenuItem(
+              value: "New",
+              child: Text("Add New Expense Category"),
+            ),
+          ),
       decoration: InputDecoration(
-        labelText: 'Project',
+        labelText: 'Expense Category',
         border: OutlineInputBorder(),
       ),
     );
   }
 
-// Helper method to build the task dropdown
+  // Helper method to build the task dropdown
   Widget buildTaskDropdown(TimeEntryProvider provider) {
     return DropdownButtonFormField<String>(
       initialValue: _selectedTaskId,
@@ -197,28 +219,35 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
         if (newValue == 'New') {
           showDialog(
             context: context,
-            builder: (context) => AddTaskDialog(onAdd: (newTask) {
-              provider.addTask(newTask); // Assuming you have an `addTask` method.
-              setState(
-                  () => _selectedTaskId = newTask.id); // Update selected tag ID
-            }),
+            builder: (context) => AddTaskDialog(
+              onAdd: (newTask) {
+                provider.addTask(
+                  newTask,
+                ); // Assuming you have an `addTask` method.
+                setState(
+                  () => _selectedTaskId = newTask.id,
+                ); // Update selected tag ID
+              },
+            ),
           );
         } else {
           setState(() => _selectedTaskId = newValue);
         }
       },
-      items: provider.tasks.map<DropdownMenuItem<String>>((task) {
-        return DropdownMenuItem<String>(
-          value: task.id,
-          child: Text(task.name),
-        );
-      }).toList()
-        ..add(DropdownMenuItem(
-          value: "New",
-          child: Text("Add New Task"),
-        )),
+      items:
+          provider.tasks.map<DropdownMenuItem<String>>((task) {
+            return DropdownMenuItem<String>(
+              value: task.id,
+              child: Text(task.name),
+            );
+          }).toList()..add(
+            DropdownMenuItem(
+              value: "New",
+              child: Text("Add New Expense Subcategory"),
+            ),
+          ),
       decoration: InputDecoration(
-        labelText: 'Task',
+        labelText: 'Expense Subcategory',
         border: OutlineInputBorder(),
       ),
     );
